@@ -4,20 +4,22 @@ module Main
   ( main
   ) where
 
+import           Control.Applicative                  ((<$>))
 import           Control.Monad.Trans                  (liftIO)
+import           Data.Char                            (toLower)
 import           Data.Maybe                           (fromMaybe)
 import qualified Data.Text.Lazy as L
 import           Network.Wai.Middleware.RequestLogger (logStdoutDev)
 import           Network.Wai.Middleware.Static        (addBase, noDots, staticPolicy, (>->))
 import           System.Environment                   (lookupEnv)
-import           System.Random                        (randomRIO)
 import           Text.Blaze.Html.Renderer.Text        (renderHtml)
 import           Web.Scotty
 
+import           Models (generateForNumberFormat, readsNumberFormat)
 import qualified Views.Index
 
 
-(defaultPort, defaultMin, defaultMax) = (3000, 0, 999999999999)
+(defaultPort, defaultMin, defaultMax) = (3000, 0, 99999999999)
 
 main = do
   port <- fromMaybeM defaultPort (lookupEnv "PORT")
@@ -29,8 +31,9 @@ main = do
 index = do
   mn <- fromMaybeParam defaultMin "min"
   mx <- fromMaybeParam defaultMax "max"
+  fmt <- (readsNumberFormat . map toLower . fromMaybe "") <$> maybeParam "fmt"
   let (lo,hi) = (min mn mx, max mn mx)
-  num <- liftIO $ randomRIO (lo, hi)
+  num <- liftIO $ generateForNumberFormat lo hi fmt
   blaze $ Views.Index.render num
 
 
