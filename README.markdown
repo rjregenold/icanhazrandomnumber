@@ -15,6 +15,7 @@ _The default is 0._
 #### Examples
 
 [http://icanhazrandomnumber.com?min=50](http://icanhazrandomnumber.com?min=50)
+
 [http://icanhazrandomnumber.com?min=-10000](http://icanhazrandomnumber.com?min=-10000)
 
 ### max
@@ -27,6 +28,7 @@ _The default is 99999999999._
 #### Examples
 
 [http://icanhazrandomnumber.com?max=50](http://icanhazrandomnumber.com?max=50)
+
 [http://icanhazrandomnumber.com?max=10000](http://icanhazrandomnumber.com?max=10000)
 
 ### fmt
